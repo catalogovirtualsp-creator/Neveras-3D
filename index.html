@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101c2b">
+  <title>Neverín 3D | Supernórdico</title>
+
+  <script type="module"
+    src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.4.0/model-viewer.min.js">
+  </script>
+
+  <style>
+    :root {
+      --navy: #101c2b;
+      --blue: #174b78;
+      --red: #e33b40;
+      --gold: #f3bd37;
+      --white: #ffffff;
+      --muted: #697789;
+      --bg: #f3f5f8;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--navy);
+      background: var(--bg);
+    }
+
+    header {
+      background: var(--navy);
+      color: white;
+      padding: 24px 7%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      border-bottom: 4px solid var(--red);
+    }
+
+    .brand {
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .brand span { color: var(--gold); }
+
+    header small {
+      color: #d2dbe6;
+      display: block;
+      margin-top: 6px;
+    }
+
+    .hero {
+      padding: 64px 7% 38px;
+      background: white;
+    }
+
+    .eyebrow {
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    h1 {
+      font-size: clamp(34px, 6vw, 60px);
+      line-height: 1.05;
+      margin: 16px 0;
+      max-width: 750px;
+    }
+
+    .hero p {
+      max-width: 580px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    main { padding: 36px 7% 70px; }
+
+    .section-title {
+      font-size: 26px;
+      margin-bottom: 8px;
+    }
+
+    .intro {
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .product {
+      background: white;
+      border: 1px solid #e1e6ec;
+      border-radius: 18px;
+      overflow: hidden;
+      max-width: 950px;
+      box-shadow: 0 10px 35px #15253a0c;
+    }
+
+    .product-heading { padding: 24px 26px 10px; }
+
+    .product-heading h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    .product-heading p {
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    model-viewer {
+      width: 100%;
+      height: 440px;
+      background: #edf1f5;
+      --poster-color: #edf1f5;
+    }
+
+    .viewer-note {
+      padding: 12px 26px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      padding: 8px 26px 26px;
+    }
+
+    .feature {
+      background: #f4f6f9;
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+    .feature strong {
+      display: block;
+      margin-bottom: 7px;
+    }
+
+    .feature p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .notice {
+      margin-top: 24px;
+      padding: 18px;
+      border-left: 4px solid var(--gold);
+      background: #fff9e9;
+      border-radius: 5px;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    footer {
+      padding: 26px 7%;
+      background: var(--navy);
+      color: #d2dbe6;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 600px) {
+      .hero { padding-top: 42px; }
+      main { padding-top: 28px; }
+      model-viewer { height: 340px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div>
+      <div class="brand">SUPER<span>NÓRDICO</span></div>
+      <small>Soluciones de refrigeración comercial</small>
+    </div>
+    <div>CATÁLOGO DIGITAL · 3D</div>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">DISEÑO · TECNOLOGÍA · REFRIGERACIÓN</div>
+    <h1>Conoce nuestros equipos desde todos los ángulos.</h1>
+    <p>
+      Explora los modelos de refrigeración comercial en tres dimensiones
+      y descubre los detalles de cada equipo.
+    </p>
+  </section>
+
+  <main>
+    <h2 class="section-title">Nuestro catálogo 3D</h2>
+    <p class="intro">
+      Explora cada modelo y conoce sus características.
+    </p>
+
+    <article class="product">
+      <div class="product-heading">
+        <h3>Modelo de demostración</h3>
+        <p>Visor interactivo de prueba. Aquí irá tu primera nevera.</p>
+      </div>
+
+      <model-viewer
+        src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+        alt="Modelo 3D temporal para probar el visor"
+        camera-controls
+        auto-rotate
+        rotation-per-second="20deg"
+        shadow-intensity="1"
+        exposure="1"
+        loading="eager">
+      </model-viewer>
+
+      <div class="viewer-note">
+        Arrastra para rotar · Usa la rueda del mouse o pellizca para acercar.
+      </div>
+
+      <div class="features">
+        <div class="feature">
+          <strong>Exploración 3D</strong>
+          <p>Gira el modelo y examina diferentes ángulos.</p>
+        </div>
+        <div class="feature">
+          <strong>Ficha técnica</strong>
+          <p>Aquí incluiremos materiales, dimensiones y capacidad.</p>
+        </div>
+        <div class="feature">
+          <strong>Detalles interactivos</strong>
+          <p>Aquí añadiremos puntos para explorar puertas, estantes y más.</p>
+        </div>
+      </div>
+    </article>
+
+    <div class="notice">
+      <strong>Próxima etapa:</strong> reemplazar el modelo de demostración
+      por un archivo GLB propio de Blender y conectar las características
+      interactivas de la nevera.
+    </div>
+  </main>
+
+  <footer>
+    <strong>SUPERNÓRDICO · NEVERÍN 3D</strong><br>
+    Catálogo digital de refrigeración comercial.
+  </footer>
+</body>
+</html>
