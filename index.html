@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#101c2b">
-  <title>Planos 3D | Supernórdico</title>
+  <meta name="theme-color" content="#101010">
+  <title>Planos 3D</title>
 
   <script type="module"
     src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.4.0/model-viewer.min.js">
@@ -13,22 +13,47 @@
 
   <style>
     :root {
-      --navy: #101c2b;
-      --blue: #174b78;
-      --red: #e33b40;
-      --gold: #f3bd37;
-      --white: #fff;
-      --muted: #697789;
+      color-scheme: light;
       --bg: #f3f5f8;
+      --surface: #ffffff;
+      --surface-alt: #edf1f5;
+      --text: #101c2b;
+      --muted: #697789;
+      --navy: #101c2b;
+      --accent: #e33b40;
+      --gold: #b58a27;
+      --border: #e1e6ec;
+      --notice: #fff9e9;
+      --notice-text: #594719;
+      --shadow: #15253a0c;
+    }
+
+    body.dark {
+      color-scheme: dark;
+      --bg: #101010;
+      --surface: #191919;
+      --surface-alt: #242424;
+      --text: #f5f1e7;
+      --muted: #b9b2a3;
+      --navy: #090909;
+      --accent: #d8b45b;
+      --gold: #e5c56b;
+      --border: #39352b;
+      --notice: #292419;
+      --notice-text: #ead8a5;
+      --shadow: #00000035;
     }
 
     * { box-sizing: border-box; }
 
+    html { scroll-behavior: smooth; }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      color: var(--navy);
+      color: var(--text);
       background: var(--bg);
+      transition: background .2s, color .2s;
     }
 
     header {
@@ -40,13 +65,13 @@
       align-items: center;
       gap: 16px;
       flex-wrap: wrap;
-      border-bottom: 4px solid var(--red);
+      border-bottom: 3px solid var(--gold);
     }
 
     .brand {
-      font-size: 26px;
+      font-size: 27px;
       font-weight: 800;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
     }
 
     .brand span { color: var(--gold); }
@@ -59,8 +84,9 @@
 
     nav {
       display: flex;
-      gap: 10px;
+      align-items: center;
       flex-wrap: wrap;
+      gap: 9px;
     }
 
     button {
@@ -69,28 +95,55 @@
       cursor: pointer;
       border: 0;
       border-radius: 10px;
-      padding: 13px 18px;
-      transition: transform .15s, background .15s;
+      padding: 13px 17px;
+      transition: transform .15s, background .15s, color .15s;
       touch-action: manipulation;
     }
 
     button:active { transform: scale(.97); }
 
-    .nav-btn {
+    button:focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    .nav-btn, .theme-btn {
       color: white;
-      background: #26394e;
+      background: #29394a;
     }
 
     .nav-btn:hover,
-    .nav-btn.active { background: var(--red); }
+    .nav-btn.active,
+    .theme-btn:hover {
+      background: var(--gold);
+      color: #15120a;
+    }
+
+    body.dark .nav-btn,
+    body.dark .theme-btn {
+      color: var(--gold);
+      background: #24221d;
+      border: 1px solid #5b4c2c;
+    }
+
+    body.dark .nav-btn.active,
+    body.dark .nav-btn:hover,
+    body.dark .theme-btn:hover {
+      color: #101010;
+      background: var(--gold);
+    }
+
+    main { padding: 0 7% 65px; }
+
+    .page { display: none; }
+    .page.active { display: block; }
 
     .hero {
-      padding: 55px 7% 42px;
-      background: white;
+      padding: 58px 0 35px;
     }
 
     .eyebrow {
-      color: var(--red);
+      color: var(--accent);
       font-size: 12px;
       font-weight: 800;
       letter-spacing: 2px;
@@ -106,20 +159,26 @@
     .hero p, .intro {
       color: var(--muted);
       line-height: 1.7;
-      max-width: 650px;
+      max-width: 680px;
     }
 
-    main { padding: 35px 7% 65px; }
+    .hero p { font-size: 16px; }
 
-    .page { display: none; }
-    .page.active { display: block; }
+    .home-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 25px;
+    }
+
+    .section-top { padding-top: 36px; }
 
     .section-title {
       font-size: 28px;
       margin: 0 0 10px;
     }
 
-    .intro { margin-bottom: 28px; }
+    .intro { margin: 0 0 26px; }
 
     .grid {
       display: grid;
@@ -127,12 +186,12 @@
       gap: 20px;
     }
 
-    .product, .sheet {
-      background: white;
-      border: 1px solid #e1e6ec;
+    .product, .sheet, .viewer-card, .spec-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 8px 25px #15253a0b;
+      box-shadow: 0 8px 25px var(--shadow);
     }
 
     .product h3, .sheet h3 {
@@ -144,34 +203,43 @@
 
     .product p, .sheet p {
       color: var(--muted);
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
     .preview {
-      height: 230px;
-      background: #edf1f5;
+      height: 235px;
+      background: var(--surface-alt);
     }
 
     model-viewer {
       display: block;
       width: 100%;
       height: 100%;
-      background: #edf1f5;
-      --poster-color: #edf1f5;
+      background: var(--surface-alt);
+      --poster-color: var(--surface-alt);
     }
 
-    .open-btn {
-      background: var(--red);
+    .primary-btn {
+      background: var(--accent);
       color: white;
       width: 100%;
       margin-top: 8px;
     }
 
-    .open-btn:hover { background: #c92e34; }
+    body.dark .primary-btn {
+      color: #17130a;
+    }
+
+    .primary-btn:hover { filter: brightness(.92); }
+
+    .secondary-btn {
+      color: var(--text);
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+    }
 
     .back-btn {
-      color: white;
-      background: var(--blue);
+      margin-top: 30px;
       margin-bottom: 20px;
     }
 
@@ -182,26 +250,22 @@
       align-items: start;
     }
 
-    .viewer-card, .spec-card {
-      background: white;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid #e1e6ec;
-    }
-
     .big-viewer { height: 460px; }
 
     .viewer-note {
       padding: 14px 20px;
       color: var(--muted);
       font-size: 13px;
+      line-height: 1.6;
     }
 
     .spec-card { padding: 22px; }
 
+    .spec-card h3 { margin-top: 0; }
+
     .spec-row {
       padding: 13px 0;
-      border-bottom: 1px solid #e7ebf0;
+      border-bottom: 1px solid var(--border);
       line-height: 1.5;
     }
 
@@ -214,10 +278,10 @@
 
     .notice {
       padding: 15px;
-      background: #fff9e9;
+      background: var(--notice);
       border-left: 4px solid var(--gold);
       border-radius: 5px;
-      color: #594719;
+      color: var(--notice-text);
       line-height: 1.6;
       font-size: 14px;
       margin-top: 20px;
@@ -229,16 +293,30 @@
       color: #d2dbe6;
       font-size: 13px;
       line-height: 1.7;
+      border-top: 3px solid var(--gold);
     }
+
+    footer strong { color: var(--gold); }
+
+    [hidden] { display: none !important; }
 
     @media (max-width: 700px) {
       header { align-items: flex-start; }
       nav { width: 100%; }
-      .nav-btn { flex: 1; padding: 13px 10px; }
+      .nav-btn { flex: 1; padding: 13px 9px; }
+      .theme-btn { flex: 0 0 auto; }
+      main { padding-bottom: 40px; }
       .hero { padding-top: 38px; }
       .detail-layout { grid-template-columns: 1fr; }
       .big-viewer { height: 350px; }
-      main { padding-top: 28px; }
+      .section-top { padding-top: 28px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
     }
   </style>
 </head>
@@ -247,243 +325,236 @@
   <header>
     <div>
       <div class="brand">PLANOS <span>3D</span></div>
-      <small>Soluciones de refrigeración comercial · Supernórdico</small>
+      <small>Modelos tridimensionales y diseño</small>
     </div>
 
     <nav aria-label="Navegación principal">
       <button class="nav-btn active" data-page="inicio">Inicio</button>
       <button class="nav-btn" data-page="catalogo">Catálogo</button>
       <button class="nav-btn" data-page="fichas">Fichas técnicas</button>
+      <button class="theme-btn" id="theme-toggle"
+        aria-label="Activar modo oscuro" title="Cambiar tema">
+        🌙
+      </button>
     </nav>
   </header>
 
-  <section class="hero">
-    <div class="eyebrow">DISEÑO · TECNOLOGÍA · REFRIGERACIÓN</div>
-    <h1>Conoce nuestros equipos desde todos los ángulos.</h1>
-    <p>
-      Explora nuestros modelos tridimensionales y consulta la información
-      técnica de cada equipo en un solo lugar.
-    </p>
-  </section>
-
   <main>
-    <!-- INICIO -->
+    <!-- INICIO: el encabezado grande solo aparece aquí -->
     <section class="page active" id="inicio">
-      <h2 class="section-title">Bienvenido a Planos 3D</h2>
-      <p class="intro">
-        Un espacio para explorar nuestros equipos de refrigeración comercial
-        y conocer sus características.
-      </p>
+      <div class="hero">
+        <div class="eyebrow">DISEÑO · TECNOLOGÍA · REFRIGERACIÓN</div>
+        <h1>Conoce nuestros equipos desde todos los ángulos.</h1>
+        <p>
+          Explora modelos tridimensionales, descubre los detalles de cada
+          equipo y consulta sus especificaciones técnicas.
+        </p>
+
+        <div class="home-actions">
+          <button class="primary-btn" style="width:auto"
+            data-go="catalogo">Explorar catálogo</button>
+          <button class="secondary-btn" data-go="fichas">
+            Consultar fichas técnicas
+          </button>
+        </div>
+      </div>
 
       <article class="product">
         <div class="product-copy">
           <h3>Modelo de demostración</h3>
-          <p>Explora el visor 3D antes de entrar al catálogo.</p>
+          <p>Prueba el visor 3D girando y acercando el modelo.</p>
         </div>
 
-        <div class="preview" style="height: 400px;">
+        <div class="preview" style="height:400px">
           <model-viewer
             src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
-            alt="Astronauta de demostración"
+            alt="Modelo tridimensional de demostración"
             camera-controls
             auto-rotate
-            shadow-intensity="1">
+            rotation-per-second="20deg"
+            shadow-intensity="1"
+            exposure="1">
           </model-viewer>
         </div>
-
-        <div class="product-copy">
-          <button class="open-btn" data-go="catalogo">
-            Explorar catálogo
-          </button>
+        <div class="viewer-note">
+          Arrastra con el dedo o el mouse para girar. Puedes acercar y alejar.
         </div>
       </article>
     </section>
 
     <!-- CATÁLOGO -->
     <section class="page" id="catalogo">
-      <h2 class="section-title">Catálogo de neveras</h2>
-      <p class="intro">
-        Selecciona un equipo para abrir su visor tridimensional y consultar
-        sus características.
-      </p>
+      <div class="section-top">
+        <h2 class="section-title">Catálogo 3D</h2>
+        <p class="intro">
+          Selecciona una nevera para explorar su modelo tridimensional.
+        </p>
+      </div>
 
       <div class="grid">
         <article class="product">
           <div class="preview">
-            <model-viewer
-              src="./nevera1.glb"
-              alt="Vista previa de la nevera uno"
-              camera-controls
-              auto-rotate
-              shadow-intensity="1">
+            <model-viewer src="./nevera1.glb"
+              alt="Vista previa de la nevera modelo 1"
+              camera-controls auto-rotate shadow-intensity="1">
             </model-viewer>
           </div>
           <div class="product-copy">
             <h3>Nevera modelo 1</h3>
-            <p>Explora el diseño y los componentes del equipo.</p>
-            <button class="open-btn" data-product="1">Ver modelo 3D</button>
+            <p>Explora el diseño y sus componentes.</p>
+            <button class="primary-btn" data-product="1">Ver modelo 3D</button>
           </div>
         </article>
 
         <article class="product">
           <div class="preview">
-            <model-viewer
-              src="./nevera2.glb"
-              alt="Vista previa de la nevera dos"
-              camera-controls
-              auto-rotate
-              shadow-intensity="1">
+            <model-viewer src="./nevera2.glb"
+              alt="Vista previa de la nevera modelo 2"
+              camera-controls auto-rotate shadow-intensity="1">
             </model-viewer>
           </div>
           <div class="product-copy">
             <h3>Nevera modelo 2</h3>
             <p>Consulta el equipo desde diferentes ángulos.</p>
-            <button class="open-btn" data-product="2">Ver modelo 3D</button>
+            <button class="primary-btn" data-product="2">Ver modelo 3D</button>
           </div>
         </article>
 
         <article class="product">
           <div class="preview">
-            <model-viewer
-              src="./nevera3.glb"
-              alt="Vista previa de la nevera tres"
-              camera-controls
-              auto-rotate
-              shadow-intensity="1">
+            <model-viewer src="./nevera3.glb"
+              alt="Vista previa de la nevera modelo 3"
+              camera-controls auto-rotate shadow-intensity="1">
             </model-viewer>
           </div>
           <div class="product-copy">
             <h3>Nevera modelo 3</h3>
-            <p>Descubre el diseño y sus especificaciones.</p>
-            <button class="open-btn" data-product="3">Ver modelo 3D</button>
+            <p>Descubre el diseño de este equipo.</p>
+            <button class="primary-btn" data-product="3">Ver modelo 3D</button>
           </div>
         </article>
-      </div>
-
-      <div class="notice">
-        Los nombres de archivo de los modelos deben coincidir con los archivos
-        GLB que están guardados en el repositorio.
       </div>
     </section>
 
     <!-- FICHAS TÉCNICAS -->
     <section class="page" id="fichas">
-      <h2 class="section-title">Fichas técnicas</h2>
-      <p class="intro">
-        Selecciona la ficha del equipo que deseas consultar.
-      </p>
+      <div class="section-top">
+        <h2 class="section-title">Fichas técnicas</h2>
+        <p class="intro">
+          Elige un modelo para consultar sus dimensiones, materiales y
+          características técnicas.
+        </p>
+      </div>
 
       <div class="grid">
         <article class="sheet">
           <div class="sheet-copy">
             <h3>Nevera modelo 1</h3>
-            <p>Información técnica del primer equipo.</p>
-            <button class="open-btn" data-sheet="1">Consultar ficha</button>
+            <p>Especificaciones del primer equipo.</p>
+            <button class="primary-btn" data-sheet="1">Consultar ficha</button>
           </div>
         </article>
 
         <article class="sheet">
           <div class="sheet-copy">
             <h3>Nevera modelo 2</h3>
-            <p>Información técnica del segundo equipo.</p>
-            <button class="open-btn" data-sheet="2">Consultar ficha</button>
+            <p>Especificaciones del segundo equipo.</p>
+            <button class="primary-btn" data-sheet="2">Consultar ficha</button>
           </div>
         </article>
 
         <article class="sheet">
           <div class="sheet-copy">
             <h3>Nevera modelo 3</h3>
-            <p>Información técnica del tercer equipo.</p>
-            <button class="open-btn" data-sheet="3">Consultar ficha</button>
+            <p>Especificaciones del tercer equipo.</p>
+            <button class="primary-btn" data-sheet="3">Consultar ficha</button>
           </div>
         </article>
       </div>
 
-      <div id="sheet-detail" class="notice" hidden></div>
+      <div id="sheet-detail" class="spec-card" style="margin-top:24px" hidden>
+      </div>
     </section>
 
-    <!-- DETALLE 3D -->
+    <!-- DETALLE DE CADA MODELO -->
     <section class="page" id="detalle">
-      <button class="back-btn" data-go="catalogo">← Volver al catálogo</button>
+      <button class="secondary-btn back-btn" data-go="catalogo">
+        ← Volver al catálogo
+      </button>
 
       <h2 class="section-title" id="detail-title">Nevera</h2>
       <p class="intro">
-        Arrastra el modelo para girarlo y utiliza los controles para acercarte.
+        Gira el equipo, acércate y observa sus detalles.
       </p>
 
       <div class="detail-layout">
         <div class="viewer-card">
           <div class="big-viewer">
-            <model-viewer
-              id="detail-viewer"
+            <model-viewer id="detail-viewer"
               src="./nevera1.glb"
               alt="Nevera en tres dimensiones"
-              camera-controls
-              auto-rotate
-              shadow-intensity="1"
-              exposure="1">
+              camera-controls auto-rotate
+              shadow-intensity="1" exposure="1">
             </model-viewer>
           </div>
           <div class="viewer-note">
-            Gira el modelo con el dedo o el mouse. Puedes acercar y alejar la vista.
+            Arrastra para rotar. Usa los dedos o la rueda del mouse para acercar.
           </div>
         </div>
 
         <div class="spec-card">
           <h3>Ficha técnica</h3>
-          <div id="detail-specs">
-            Selecciona un equipo para consultar sus especificaciones.
-          </div>
-          <div class="notice">
-            Las especificaciones definitivas se deben completar con los datos
-            reales de cada nevera.
-          </div>
+          <div id="detail-specs"></div>
         </div>
       </div>
     </section>
   </main>
 
   <footer>
-    <strong>PLANOS 3D · SUPERNÓRDICO</strong><br>
-    Catálogo digital de refrigeración comercial.
+    <strong>PLANOS 3D</strong><br>
+    Catálogo digital de modelos tridimensionales.
   </footer>
 
   <script>
     const pages = document.querySelectorAll(".page");
     const navButtons = document.querySelectorAll(".nav-btn");
+    const themeToggle = document.getElementById("theme-toggle");
 
     const products = {
       1: {
         name: "Nevera modelo 1",
         file: "./nevera1.glb",
         specs: {
-          "Modelo": "Por completar",
-          "Dimensiones": "Por confirmar",
-          "Materiales": "Por confirmar",
-          "Capacidad": "Por confirmar",
-          "Componentes": "Por confirmar"
+          "Dimensiones": "Por completar",
+          "Materiales": "Por completar",
+          "Capacidad": "Por completar",
+          "Estantes": "Por completar",
+          "Puertas": "Por completar",
+          "Otros componentes": "Por completar"
         }
       },
       2: {
         name: "Nevera modelo 2",
         file: "./nevera2.glb",
         specs: {
-          "Modelo": "Por completar",
-          "Dimensiones": "Por confirmar",
-          "Materiales": "Por confirmar",
-          "Capacidad": "Por confirmar",
-          "Componentes": "Por confirmar"
+          "Dimensiones": "Por completar",
+          "Materiales": "Por completar",
+          "Capacidad": "Por completar",
+          "Estantes": "Por completar",
+          "Puertas": "Por completar",
+          "Otros componentes": "Por completar"
         }
       },
       3: {
         name: "Nevera modelo 3",
         file: "./nevera3.glb",
         specs: {
-          "Modelo": "Por completar",
-          "Dimensiones": "Por confirmar",
-          "Materiales": "Por confirmar",
-          "Capacidad": "Por confirmar",
-          "Componentes": "Por confirmar"
+          "Dimensiones": "Por completar",
+          "Materiales": "Por completar",
+          "Capacidad": "Por completar",
+          "Estantes": "Por completar",
+          "Puertas": "Por completar",
+          "Otros componentes": "Por completar"
         }
       }
     };
@@ -494,27 +565,14 @@
       });
 
       navButtons.forEach(button => {
-        button.classList.toggle(
-          "active",
-          button.dataset.page === pageId
-        );
+        button.classList.toggle("active", button.dataset.page === pageId);
       });
 
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    function openProduct(id) {
-      const product = products[id];
-      if (!product) return;
-
-      document.getElementById("detail-title").textContent = product.name;
-
-      const viewer = document.getElementById("detail-viewer");
-      viewer.src = product.file;
-      viewer.alt = product.name;
-
-      const specs = document.getElementById("detail-specs");
-      specs.replaceChildren();
+    function renderSpecs(container, product) {
+      container.replaceChildren();
 
       Object.entries(product.specs).forEach(([label, value]) => {
         const row = document.createElement("div");
@@ -527,9 +585,21 @@
         content.textContent = value;
 
         row.append(heading, content);
-        specs.appendChild(row);
+        container.appendChild(row);
       });
+    }
 
+    function openProduct(id) {
+      const product = products[id];
+      if (!product) return;
+
+      document.getElementById("detail-title").textContent = product.name;
+
+      const viewer = document.getElementById("detail-viewer");
+      viewer.src = product.file;
+      viewer.alt = product.name;
+
+      renderSpecs(document.getElementById("detail-specs"), product);
       showPage("detalle");
     }
 
@@ -538,19 +608,14 @@
       if (!product) return;
 
       const detail = document.getElementById("sheet-detail");
+      detail.hidden = false;
       detail.replaceChildren();
 
       const heading = document.createElement("h3");
       heading.textContent = "Ficha técnica: " + product.name;
       detail.appendChild(heading);
 
-      Object.entries(product.specs).forEach(([label, value]) => {
-        const line = document.createElement("p");
-        line.textContent = label + ": " + value;
-        detail.appendChild(line);
-      });
-
-      detail.hidden = false;
+      renderSpecs(detail, product);
       detail.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
@@ -568,6 +633,34 @@
 
     document.querySelectorAll("[data-sheet]").forEach(button => {
       button.addEventListener("click", () => openSheet(button.dataset.sheet));
+    });
+
+    function applyTheme(dark) {
+      document.body.classList.toggle("dark", dark);
+      themeToggle.textContent = dark ? "☀️" : "🌙";
+      themeToggle.setAttribute(
+        "aria-label",
+        dark ? "Activar modo claro" : "Activar modo oscuro"
+      );
+      document.querySelector('meta[name="theme-color"]').content =
+        dark ? "#101010" : "#101c2b";
+    }
+
+    let darkMode = false;
+
+    try {
+      darkMode = localStorage.getItem("planos3d-theme") === "dark";
+    } catch (error) {}
+
+    applyTheme(darkMode);
+
+    themeToggle.addEventListener("click", () => {
+      darkMode = !document.body.classList.contains("dark");
+      applyTheme(darkMode);
+
+      try {
+        localStorage.setItem("planos3d-theme", darkMode ? "dark" : "light");
+      } catch (error) {}
     });
   </script>
 </body>
