@@ -138,9 +138,7 @@
     .page { display: none; }
     .page.active { display: block; }
 
-    .hero {
-      padding: 58px 0 35px;
-    }
+    .hero { padding: 58px 0 35px; }
 
     .eyebrow {
       color: var(--accent);
@@ -340,7 +338,7 @@
   </header>
 
   <main>
-    <!-- INICIO: el encabezado grande solo aparece aquí -->
+    <!-- INICIO -->
     <section class="page active" id="inicio">
       <div class="hero">
         <div class="eyebrow">DISEÑO · TECNOLOGÍA · REFRIGERACIÓN</div>
@@ -361,21 +359,27 @@
 
       <article class="product">
         <div class="product-copy">
-          <h3>Modelo de demostración</h3>
-          <p>Prueba el visor 3D girando y acercando el modelo.</p>
+          <h3>Nuestra nevera de demostración</h3>
+          <p>
+            Explora este modelo industrial en tres dimensiones.
+            Puedes girarlo y acercarte para observar sus detalles.
+          </p>
         </div>
 
         <div class="preview" style="height:400px">
           <model-viewer
-            src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
-            alt="Modelo tridimensional de demostración"
+            src="./nevera%20prototipo%202%20puerta%20o%20puertas%20definitiva%20con%20logo%20y%20controlador%20y%20ruedas.glb"
+            alt="Modelo tridimensional de una nevera industrial de dos puertas"
             camera-controls
             auto-rotate
             rotation-per-second="20deg"
             shadow-intensity="1"
-            exposure="1">
+            exposure="1"
+            loading="eager"
+            reveal="auto">
           </model-viewer>
         </div>
+
         <div class="viewer-note">
           Arrastra con el dedo o el mouse para girar. Puedes acercar y alejar.
         </div>
@@ -472,7 +476,8 @@
         </article>
       </div>
 
-      <div id="sheet-detail" class="spec-card" style="margin-top:24px" hidden>
+      <div id="sheet-detail" class="spec-card"
+        style="margin-top:24px" hidden>
       </div>
     </section>
 
@@ -497,6 +502,7 @@
               shadow-intensity="1" exposure="1">
             </model-viewer>
           </div>
+
           <div class="viewer-note">
             Arrastra para rotar. Usa los dedos o la rueda del mouse para acercar.
           </div>
@@ -522,39 +528,39 @@
 
     const products = {
       1: {
-        name: "Nevera modelo 1",
+        name: "Nevera de 1 puerta",
         file: "./nevera1.glb",
         specs: {
           "Dimensiones": "Por completar",
           "Materiales": "Por completar",
           "Capacidad": "Por completar",
           "Estantes": "Por completar",
-          "Puertas": "Por completar",
-          "Otros componentes": "Por completar"
+          "Puertas": "1 puerta",
+          "Otros componentes": "Logo, controlador y ruedas"
         }
       },
       2: {
-        name: "Nevera modelo 2",
-        file: "./nevera2.glb",
+        name: "Nevera de 2 puertas",
+        file: "./nevera%20prototipo%202%20puerta%20o%20puertas%20definitiva%20con%20logo%20y%20controlador%20y%20ruedas.glb",
         specs: {
           "Dimensiones": "Por completar",
           "Materiales": "Por completar",
           "Capacidad": "Por completar",
           "Estantes": "Por completar",
-          "Puertas": "Por completar",
-          "Otros componentes": "Por completar"
+          "Puertas": "2 puertas",
+          "Otros componentes": "Logo, controlador y ruedas"
         }
       },
       3: {
-        name: "Nevera modelo 3",
+        name: "Nevera de 3 puertas",
         file: "./nevera3.glb",
         specs: {
           "Dimensiones": "Por completar",
           "Materiales": "Por completar",
           "Capacidad": "Por completar",
           "Estantes": "Por completar",
-          "Puertas": "Por completar",
-          "Otros componentes": "Por completar"
+          "Puertas": "3 puertas",
+          "Otros componentes": "Logo, controlador y ruedas"
         }
       }
     };
@@ -565,7 +571,10 @@
       });
 
       navButtons.forEach(button => {
-        button.classList.toggle("active", button.dataset.page === pageId);
+        button.classList.toggle(
+          "active",
+          button.dataset.page === pageId
+        );
       });
 
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -615,33 +624,49 @@
       heading.textContent = "Ficha técnica: " + product.name;
       detail.appendChild(heading);
 
-      renderSpecs(detail, product);
-      detail.scrollIntoView({ behavior: "smooth", block: "start" });
+      const specs = document.createElement("div");
+      detail.appendChild(specs);
+
+      renderSpecs(specs, product);
+      detail.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
     }
 
     document.querySelectorAll("[data-page]").forEach(button => {
-      button.addEventListener("click", () => showPage(button.dataset.page));
+      button.addEventListener("click", () => {
+        showPage(button.dataset.page);
+      });
     });
 
     document.querySelectorAll("[data-go]").forEach(button => {
-      button.addEventListener("click", () => showPage(button.dataset.go));
+      button.addEventListener("click", () => {
+        showPage(button.dataset.go);
+      });
     });
 
     document.querySelectorAll("[data-product]").forEach(button => {
-      button.addEventListener("click", () => openProduct(button.dataset.product));
+      button.addEventListener("click", () => {
+        openProduct(button.dataset.product);
+      });
     });
 
     document.querySelectorAll("[data-sheet]").forEach(button => {
-      button.addEventListener("click", () => openSheet(button.dataset.sheet));
+      button.addEventListener("click", () => {
+        openSheet(button.dataset.sheet);
+      });
     });
 
     function applyTheme(dark) {
       document.body.classList.toggle("dark", dark);
       themeToggle.textContent = dark ? "☀️" : "🌙";
+
       themeToggle.setAttribute(
         "aria-label",
         dark ? "Activar modo claro" : "Activar modo oscuro"
       );
+
       document.querySelector('meta[name="theme-color"]').content =
         dark ? "#101010" : "#101c2b";
     }
@@ -659,7 +684,10 @@
       applyTheme(darkMode);
 
       try {
-        localStorage.setItem("planos3d-theme", darkMode ? "dark" : "light");
+        localStorage.setItem(
+          "planos3d-theme",
+          darkMode ? "dark" : "light"
+        );
       } catch (error) {}
     });
   </script>
