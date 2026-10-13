@@ -1,0 +1,53 @@
+
+{
+  "productos": [
+    {
+      "id": "nevera-1",
+      "nombre": "Nevera de 1 puerta",
+      "archivo": "nevera prototipo 1 puerta o puertas definitiva con logo y controlador y ruedas.glb",
+      "visible": true,
+      "especificaciones": {
+        "puertas": "1 puerta",
+        "logo": "Incluido",
+        "controlador": "Incluido",
+        "ruedas": "Incluidas",
+        "dimensiones": "Por completar",
+        "material": "Por completar",
+        "capacidad": "Por completar",
+        "entrepanos": "Por completar"
+      }
+    },
+    {
+      "id": "nevera-2",
+      "nombre": "Nevera de 2 puertas",
+      "archivo": "nevera prototipo 2 puerta o puertas definitiva con logo y controlador y ruedas.glb",
+      "visible": true,
+      "especificaciones": {
+        "puertas": "2 puertas",
+        "logo": "Incluido",
+        "controlador": "Incluido",
+        "ruedas": "Incluidas",
+        "dimensiones": "Por completar",
+        "material": "Por completar",
+        "capacidad": "Por completar",
+        "entrepanos": "Por completar"
+      }
+    },
+    {
+      "id": "nevera-3",
+      "nombre": "Nevera de 3 puertas",
+      "archivo": "nevera prototipo 3 puerta o puertas definitiva con logo y controlador y ruedas.glb",
+      "visible": true,
+      "especificaciones": {
+        "puertas": "3 puertas",
+        "logo": "Incluido",
+        "controlador": "Incluido",
+        "ruedas": "Incluidas",
+        "dimensiones": "Por completar",
+        "material": "Por completar",
+        "capacidad": "Por completar",
+        "entrepanos": "Por completar"
+      }
+    }
+  ]
+}
